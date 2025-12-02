@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -24,6 +25,55 @@ public class PostController {
     @ModelAttribute("siteName")
     public String siteName() {
         return "커뮤니티 사이트 A";
+    }
+
+
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class ModifyForm {
+        @NotBlank(message = "01-title-제목을 입력해주세요.")
+        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력가능합니다.")
+        private String title;
+        @NotBlank(message = "03-content-내용을 입력해주세요.")
+        @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+        private String content;
+    }
+
+    @GetMapping("/posts/{id}/modify")
+    @Transactional(readOnly = true)
+    public String showModify(
+            @PathVariable int id,
+            @ModelAttribute("form") ModifyForm form,
+            Model model
+    ) {
+        Post post = postService.findById(id).get();
+
+        model.addAttribute("post", post);
+        form.setTitle(post.getTitle());
+        form.setContent(post.getContent());
+
+        return "post/post/modify";
+    }
+
+    @PostMapping("/posts/{id}/modify")
+    @Transactional
+    public String modify(
+            @PathVariable int id,
+            @Valid @ModelAttribute("form") ModifyForm form,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        Post post = postService.findById(id).get();
+        model.addAttribute("post", post);
+
+        if (bindingResult.hasErrors()) {
+            return "post/post/modify";
+        }
+
+        postService.modify(post, form.getTitle(), form.getContent());
+
+        return "redirect:/posts/" + post.getId();
     }
 
 
@@ -76,9 +126,10 @@ public class PostController {
 
     @GetMapping("/posts")
     @Transactional(readOnly = true)
-    @ResponseBody
-    public List<Post> showList() {
-        return postService.findAll();
+    public String showList(Model model) {
+        List<Post> posts = postService.findAll();
+        model.addAttribute("posts", posts);
+        return "post/post/list";
     }
 
     @GetMapping("/posts/")
