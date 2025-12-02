@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +25,7 @@ public class PostController {
     public String siteName() {
         return "커뮤니티 사이트 A";
     }
+
 
     @AllArgsConstructor
     @Getter
@@ -55,7 +56,33 @@ public class PostController {
 
         Post post = postService.write(form.getTitle(), form.getContent());
 
+        return "redirect:/posts/" + post.getId();
+    }
 
-        return "redirect:/posts/write";
+
+    @GetMapping("/posts/{id}")
+    @Transactional(readOnly = true)
+    public String showDetail(
+            @PathVariable int id,
+            Model model
+    ) {
+        Post post = postService.findById(id).get();
+
+        model.addAttribute("post", post);
+
+        return "post/post/detail";
+    }
+
+
+    @GetMapping("/posts")
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public List<Post> showList() {
+        return postService.findAll();
+    }
+
+    @GetMapping("/posts/")
+    public String redirectToList() {
+        return "redirect:/posts";
     }
 }

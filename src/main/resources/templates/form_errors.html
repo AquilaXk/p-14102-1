@@ -7,13 +7,14 @@
             th:data-error-field-name="${errFieldName}" th:text="${errMsg}"
             style="color: red;"/>
     </ul>
-    <script>
-        const forms = document.querySelectorAll('form');
 
+    <script>
+        // 현재까지 나온 모든 폼 검색
+        const forms = document.querySelectorAll('form');
+        // 그 중에서 가장 마지막 폼 1개 찾기
         const lastForm = forms[forms.length - 1];
 
-        //ul>li ul의 자식 li 중 제일 위에
-        const errorFieldName = lastForm.querySelector('ul>li')?.dataset?.errorFieldName || '';
+        const errorFieldName = lastForm.querySelector('ul > li')?.dataset?.errorFieldName || '';
 
         if (errorFieldName.length > 0) {
             setTimeout(() => lastForm[errorFieldName].focus());
