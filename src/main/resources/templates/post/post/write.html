@@ -1,10 +1,8 @@
 <h1 th:text="${siteName}"></h1>
 
-<ul style="color: red;">
-    <th:block th:utext="${errorMessage}"></th:block>
-</ul>
-
 <form method="POST" action="doWrite" th:object="${form}">
+    <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+
     <div>
         <label for="title">제목</label><br>
         <input type="text" placeholder="제목" autofocus th:field="*{title}">
@@ -16,19 +14,3 @@
     <input type="submit" value="작성">
 </form>
 
-<script>
-    // 현재 문서에 존재하는 모든 <form> 요소를 선택
-    const forms = document.querySelectorAll('form');
-    // 문서의 마지막에 위치한 <form> 요소 (현재 작성 폼)를 선택
-    const lastForm = forms[forms.length - 1];
-
-    // 폼 바로 앞에 위치한 <ul> (오류 메시지 목록)에서 첫 번째 <li> 요소를 찾고,
-    // 해당 <li>에 포함된 'data-error-field-name' 속성 값(오류가 발생한 필드 이름)을 추출
-    const errorFieldName = lastForm.previousElementSibling?.querySelector('li')?.dataset?.errorFieldName || '';
-
-    // 오류 필드 이름이 존재하는 경우 (유효성 검증 실패 시)
-    if (errorFieldName.length > 0) {
-        // 해당 필드 이름(name 속성 값)을 가진 폼 요소에 포커스를 설정
-        lastForm[errorFieldName].focus();
-    }
-</script>
