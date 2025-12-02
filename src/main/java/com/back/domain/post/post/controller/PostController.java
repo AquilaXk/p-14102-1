@@ -42,7 +42,7 @@ public class PostController {
         return "post/post/write";
     }
 
-    @PostMapping("/posts/doWrite")
+    @PostMapping("/posts/write")
     @Transactional
     public String write(
             @ModelAttribute("form") @Valid WriteForm form,
@@ -55,8 +55,7 @@ public class PostController {
 
         Post post = postService.write(form.getTitle(), form.getContent());
 
-        model.addAttribute("post", post);
 
-        return "post/post/writeDone";
+        return "redirect:/posts/write";
     }
 }
