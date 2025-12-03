@@ -4,10 +4,61 @@
 
 <h2>제목 : [[${post.title}]]</h2>
 
-<h3>작성일 : <span th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}">작성일</span></h3>
-<h3>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd')}">수정일</span></h3>
+<h3>작성일 : <span th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">작성일</span></h3>
+<h3>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}">수정일</span></h3>
 <h3>내용</h3>
 <div style="white-space: pre-line;">[[${post.content}]]</div>
+
+<hr>
+
+<h2>댓글 작성</h2>
+
+<script>
+    function PostComment_submitWriteForm(form) {
+        form.content.value = form.content.value.trim()
+
+        if (form.content.value.length === 0) {
+            alert("댓글 내용을 입력해주세요.");
+            form.content.focus();
+
+            return;
+        }
+
+        if (form.content.value.length < 2 || form.content.value.length > 20) {
+            alert("댓글 내용을 2자 이상 20자 미만 입력해주세요.")
+            form.content.focust();
+
+            return;
+        }
+
+        form.submit();
+    }
+</script>
+
+<form onsubmit="PostComment_submitWriteForm(this); return false;" th:action="@{/post/{id}/comments/write(id=${post.id})}" method="post">
+    <div>
+        <label for="content">내용</label>
+        <br />
+        <textarea id="content" name="content" rows="5" cols="50"></textarea>
+    </div>
+    <div>
+        <button type="submit">작성</button>
+    </div>
+</form>
+
+<h2>댓글</h2>
+
+<ul>
+    <li th:each="postComment : ${post.comments.reversed}">
+        <h3>번호 : <span th:text="${postComment.id}">댓글 번호</span></h3>
+        <h4>작성일 : <span th:text="${#temporals.format(postComment.createDate, 'yy.MM.dd HH:mm')}">작성일</span></h4>
+        <h4>수정일 : <span th:text="${#temporals.format(postComment.modifyDate, 'yy.MM.dd HH:mm')}">수정일</span></h4>
+        <div style="white-space: pre-line;"
+             th:text="${postComment.content}">댓글 내용
+        </div>
+        <hr>
+    </li>
+</ul>
 
 <div>
     <a href=".">글 목록</a>
