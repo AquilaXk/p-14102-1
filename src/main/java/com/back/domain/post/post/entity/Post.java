@@ -1,6 +1,5 @@
 package com.back.domain.post.post.entity;
 
-
 import com.back.domain.post.postComment.entity.PostComment;
 import com.back.global.jpa.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -22,7 +21,7 @@ public class Post extends BaseEntity {
     private String title;
     private String content;
 
-    @OneToMany(mappedBy="post", fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @OneToMany(mappedBy = "post", fetch = LAZY, cascade = {PERSIST, REMOVE})
     private List<PostComment> comments = new ArrayList<>();
 
     public Post(String title, String content) {
@@ -34,11 +33,11 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
     }
-    // this 는 Post 객체 전달
+
     public PostComment addComment(String content) {
         PostComment postComment = new PostComment(this, content);
         comments.add(postComment);
+
         return postComment;
     }
-
 }

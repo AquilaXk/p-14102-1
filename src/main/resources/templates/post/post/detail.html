@@ -4,8 +4,9 @@
 
 <h2>제목 : [[${post.title}]]</h2>
 
-<h3>작성일 : <span th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">작성일</span></h3>
-<h3>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}">수정일</span></h3>
+<h3>작성일 : <span th:text="${#temporals.format(post.createDate, 'yy.MM.dd HH:mm')}">작성일</span></h3>
+<h3>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yy.MM.dd HH:mm')}">수성일</span></h3>
+
 <h3>내용</h3>
 <div style="white-space: pre-line;">[[${post.content}]]</div>
 
@@ -14,8 +15,8 @@
 <h2>댓글 작성</h2>
 
 <script>
-    function PostComment_submitWriteForm(form) {
-        form.content.value = form.content.value.trim()
+    function PostComment__submitWriteForm(form) {
+        form.content.value = form.content.value.trim();
 
         if (form.content.value.length === 0) {
             alert("댓글 내용을 입력해주세요.");
@@ -24,9 +25,9 @@
             return;
         }
 
-        if (form.content.value.length < 2 || form.content.value.length > 20) {
-            alert("댓글 내용을 2자 이상 20자 미만 입력해주세요.")
-            form.content.focust();
+        if (form.content.value.length < 2) {
+            alert("댓글 내용을 2자 이상 입력해주세요.");
+            form.content.focus();
 
             return;
         }
@@ -35,16 +36,18 @@
     }
 </script>
 
-<form onsubmit="PostComment_submitWriteForm(this); return false;" th:action="@{/post/{id}/comments/write(id=${post.id})}" method="post">
+<form th:action="@{/posts/{id}/comments/write(id=${post.id})}" method="post"
+      onsubmit="PostComment__submitWriteForm(this); return false;">
     <div>
         <label for="content">내용</label>
-        <br />
         <textarea id="content" name="content" rows="5" cols="50"></textarea>
     </div>
     <div>
         <button type="submit">작성</button>
     </div>
 </form>
+
+<hr>
 
 <h2>댓글</h2>
 
@@ -53,9 +56,7 @@
         <h3>번호 : <span th:text="${postComment.id}">댓글 번호</span></h3>
         <h4>작성일 : <span th:text="${#temporals.format(postComment.createDate, 'yy.MM.dd HH:mm')}">작성일</span></h4>
         <h4>수정일 : <span th:text="${#temporals.format(postComment.modifyDate, 'yy.MM.dd HH:mm')}">수정일</span></h4>
-        <div style="white-space: pre-line;"
-             th:text="${postComment.content}">댓글 내용
-        </div>
+        <div style="white-space: pre-line;" th:text="${postComment.content}">댓글 내용</div>
         <hr>
     </li>
 </ul>
