@@ -15,6 +15,10 @@ spring:
     password:
     hikari:
       auto-commit: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
   jpa:
     show-sql: true
