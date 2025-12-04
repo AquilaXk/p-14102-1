@@ -6,16 +6,11 @@ import com.back.domain.post.postComment.entity.PostComment;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +23,7 @@ public class PostCommentController {
             @Size(min = 2, max = 100)
             String content
     ) {
+
     }
 
     @GetMapping("/posts/{postId}/comments/{id}/modify")
@@ -82,7 +78,8 @@ public class PostCommentController {
         return "redirect:/posts/" + postId;
     }
 
-    @GetMapping("/posts/{postId}/comments/{id}/delete")
+
+    @DeleteMapping("/posts/{postId}/comments/{id}/delete")
     @Transactional
     public String delete(
             @PathVariable int postId,

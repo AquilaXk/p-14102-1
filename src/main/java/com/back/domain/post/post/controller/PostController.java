@@ -5,10 +5,7 @@ import com.back.domain.post.post.service.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,11 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-
-    @ModelAttribute("siteName")
-    public String siteName() {
-        return "커뮤니티 사이트 A";
-    }
 
 
     record ModifyForm(
@@ -42,7 +34,6 @@ public class PostController {
     @Transactional(readOnly = true)
     public String showModify(
             @PathVariable int id,
-            @ModelAttribute("form") ModifyForm form,
             Model model
     ) {
         Post post = postService.findById(id).get();
@@ -82,6 +73,7 @@ public class PostController {
             @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
             String content
     ) {
+
     }
 
     @GetMapping("/posts/write")

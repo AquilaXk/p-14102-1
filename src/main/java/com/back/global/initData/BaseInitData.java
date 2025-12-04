@@ -19,8 +19,7 @@ public class BaseInitData {
     private final PostService postService;
 
     @Bean
-    ApplicationRunner BaseinitData(){
-
+    ApplicationRunner baseInitDataApplicationRunner() {
         return args -> {
             self.work1();
         };
@@ -39,6 +38,5 @@ public class BaseInitData {
         post1.addComment("댓글 1-3");
         post2.addComment("댓글 2-1");
         post2.addComment("댓글 2-2");
-
     }
 }

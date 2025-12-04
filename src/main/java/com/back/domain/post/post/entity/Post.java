@@ -1,3 +1,4 @@
+
 package com.back.domain.post.post.entity;
 
 import com.back.domain.post.postComment.entity.PostComment;
@@ -43,7 +44,8 @@ public class Post extends BaseEntity {
     }
 
     public Optional<PostComment> findCommentById(int id) {
-        return comments.stream()
+        return comments
+                .stream()
                 .filter(comment -> comment.getId() == id)
                 .findFirst();
     }

@@ -25,10 +25,12 @@ public class PostService {
     }
 
     public Optional<Post> findById(int id) {
+
         return postRepository.findById(id);
     }
 
     public List<Post> findAll() {
+
         return postRepository.findAll();
     }
 
@@ -37,10 +39,12 @@ public class PostService {
     }
 
     public void writeComment(Post post, String content) {
+
         post.addComment(content);
     }
 
     public boolean deleteComment(Post post, PostComment postComment) {
+
         return post.deleteComment(postComment);
     }
 
